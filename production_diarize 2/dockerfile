@@ -1,15 +1,20 @@
 FROM nvcr.io/nvidia/tritonserver:24.11-py3
 
-RUN apt-get update && \
+# Удаляем репозитории CUDA, которые могут блокировать обновление, если они не нужны
+RUN rm -f /etc/apt/sources.list.d/cuda*.list
+
+# Обновление списка пакетов и установка необходимых зависимостей
+RUN apt-get update --allow-releaseinfo-change && \
     apt-get install -y --no-install-recommends \
     python3-pip python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+    libsndfile1 && \
+    rm -rf /var/lib/apt/lists/*
 
-# Копируем requirements.txt внутрь контейнера
-COPY requirements.txt /tmp/
-
-# Устанавливаем зависимости
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+# Устанавливаем зависимости через pip
+RUN pip install --no-cache-dir \
+    torch \
+    pyannote.audio \
+    tritonclient
 
 # Копируем модель из model_repository в контейнер
 COPY model_repository /models
