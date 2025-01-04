@@ -1,0 +1,19 @@
+name: "speaker_diarization"
+backend: "python"
+max_batch_size: 0
+
+input [
+    {
+        name: "AUDIO_INPUT"     # Имя входного тензора
+        data_type: TYPE_UINT8   # Тип данных: байтовый массив
+        dims: [ -1 ]            # Динамическая длина данных
+    }
+]
+
+output [
+    {
+        name: "RTTM_OUTPUT"     # Имя выходного тензора
+        data_type: TYPE_UINT8   # Тип данных: байтовый массив
+        dims: [ -1 ]            # Динамическая длина данных
+    }
+]

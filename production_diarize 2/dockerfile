@@ -1,0 +1,18 @@
+FROM nvcr.io/nvidia/tritonserver:24.11-py3
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python3-pip python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копируем requirements.txt внутрь контейнера
+COPY requirements.txt /tmp/
+
+# Устанавливаем зависимости
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Копируем модель из model_repository в контейнер
+COPY model_repository /models
+
+# Запускаем Triton сервер
+CMD ["tritonserver", "--model-repository=/models"]
