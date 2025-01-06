@@ -7,8 +7,8 @@ RUN rm -f /etc/apt/sources.list.d/cuda*.list
 RUN apt-get update --allow-releaseinfo-change && \
     apt-get install -y --no-install-recommends \
     python3-pip python3-dev \
-    libsndfile1 && \
-    rm -rf /var/lib/apt/lists/*
+    libsndfile1 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Устанавливаем зависимости через pip
 RUN pip install --no-cache-dir \
@@ -19,5 +19,5 @@ RUN pip install --no-cache-dir \
 # Копируем модель из model_repository в контейнер
 COPY model_repository /models
 
-# Запускаем Triton сервер
+# Убедитесь, что Triton server будет искать модели в правильной директории
 CMD ["tritonserver", "--model-repository=/models"]
