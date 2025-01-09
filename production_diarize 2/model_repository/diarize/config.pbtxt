@@ -5,7 +5,7 @@ max_batch_size: 0
 input [
     {
         name: "AUDIO_INPUT"     # Имя входного тензора
-        data_type: TYPE_UINT8   # Тип данных: байтовый массив
+        data_type: TYPE_FP32   # Тип данных: байтовый массив
         dims: [ -1 ]            # Динамическая длина данных
     }
 ]
@@ -15,5 +15,12 @@ output [
         name: "RTTM_OUTPUT"     # Имя выходного тензора
         data_type: TYPE_UINT8   # Тип данных: байтовый массив
         dims: [ -1 ]            # Динамическая длина данных
+    }
+]
+
+instance_group [
+    { 
+        kind: KIND_GPU          # Используем GPU для обработки модели
+        count: 1                # Количество экземпляров модели на GPU
     }
 ]
